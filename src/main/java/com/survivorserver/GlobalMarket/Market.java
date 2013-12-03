@@ -41,7 +41,6 @@ public class Market extends JavaPlugin implements Listener {
 	static Market market;
 	ConfigHandler config;
 	MarketStorage storageHandler;
-	MarketServer server;
 	InterfaceHandler interfaceHandler;
 	MarketCore core;
 	InterfaceListener listener;
@@ -116,10 +115,6 @@ public class Market extends JavaPlugin implements Listener {
 		prefix = locale.get("cmd.prefix");
 		storageHandler = new MarketStorage(config, this);
 		interfaceHandler = new InterfaceHandler(this, storageHandler);
-		if (getConfig().getBoolean("server.enable")) {
-			server = new MarketServer(this, storageHandler, interfaceHandler);
-			server.start();
-		}
 		core = new MarketCore(this, interfaceHandler, storageHandler);
 		listener = new InterfaceListener(this, interfaceHandler, storageHandler, core);
 		queue = new MarketQueue(this, storageHandler);
@@ -162,17 +157,6 @@ public class Market extends JavaPlugin implements Listener {
 	
 	public LocaleHandler getLocale() {
 		return locale;
-	}
-	
-	public boolean serverEnabled() {
-		if (server != null) {
-			return true;
-		}
-		return false;
-	}
-	
-	public MarketServer server() {
-		return server;
 	}
 	
 	public double getCut(double amount) {
@@ -396,11 +380,11 @@ public class Market extends JavaPlugin implements Listener {
 		if (storageHandler.getNumMail(player.getName()) > 0) {
 			player.sendMessage(prefix + locale.get("you_have_new_mail"));
 		}
-		if (player.hasPermission("globalmarket.admin")) {
+		/*if (player.hasPermission("globalmarket.admin")) {
 			if (getConfig().getBoolean("notify_on_update")) {
 				new UpdateCheck(this, player.getName());
 			}
-		}
+		}*/
 	}
 
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
@@ -485,7 +469,7 @@ public class Market extends JavaPlugin implements Listener {
 								player.sendMessage(ChatColor.RED + locale.get("you_dont_have_x_of_this_item", amount));
 								return true;
 							}
-							ItemStack toList = new ItemStack(player.getItemInHand());
+							ItemStack toList = player.getItemInHand().clone();
 							if (player.getItemInHand().getAmount() == amount) {
 								player.setItemInHand(new ItemStack(Material.AIR));
 							} else {
@@ -500,7 +484,7 @@ public class Market extends JavaPlugin implements Listener {
 								sender.sendMessage(prefix + locale.get("item_sent"));
 							}
 						} else {
-							ItemStack toList = new ItemStack(player.getItemInHand());
+							ItemStack toList = player.getItemInHand().clone();
 							if (getTradeTime() > 0 && !sender.hasPermission("globalmarket.noqueue")) {
 								queue.queueMail(toList, args[1]);
 								sender.sendMessage(prefix + locale.get("item_will_send"));
@@ -614,7 +598,7 @@ public class Market extends JavaPlugin implements Listener {
 									return true;
 								}
 							}
-							ItemStack toList = new ItemStack(player.getItemInHand());
+							ItemStack toList = player.getItemInHand().clone();
 							if (player.getItemInHand().getAmount() == amount) {
 								if (!infinite) {
 									player.setItemInHand(new ItemStack(Material.AIR));
@@ -647,7 +631,7 @@ public class Market extends JavaPlugin implements Listener {
 									return true;
 								}
 							}
-							ItemStack toList = new ItemStack(player.getItemInHand());
+							ItemStack toList = player.getItemInHand().clone();
 							if (getTradeTime() > 0 && !sender.hasPermission("globalmarket.noqueue")) {
 								queue.queueListing(toList, player.getName(), price);
 								sender.sendMessage(ChatColor.GREEN + locale.get("item_queued", getTradeTime()));
@@ -735,9 +719,6 @@ public class Market extends JavaPlugin implements Listener {
 	
 	public void onDisable() {
 		interfaceHandler.closeAllInterfaces();
-		if (getConfig().getBoolean("server.enable")) {
-			server.setDisabled();
-		}
 		for(int i = 0; i < tasks.size(); i++) {
 			getServer().getScheduler().cancelTask(tasks.get(i));
 		}

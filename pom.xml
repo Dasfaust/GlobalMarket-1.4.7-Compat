@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.survivorserver.Dasfaust</groupId>
-  <artifactId>GlobalMarket</artifactId>
+  <artifactId>GlobalMarket-1.4.7-Compat</artifactId>
   <version>1.2.2</version>
   <repositories>
 	  <repository>
@@ -27,21 +27,6 @@
 		<groupId>net.milkbowl.vault</groupId>
 		<artifactId>Vault</artifactId>
 		<version>1.2.26-SNAPSHOT</version>
-	</dependency>
-	<dependency>
-		<groupId>com.fasterxml.jackson.core</groupId>
-		<artifactId>jackson-core</artifactId>
-		<version>2.1.4</version>
-	</dependency>
-	<dependency>
-		<groupId>com.fasterxml.jackson.core</groupId>
-		<artifactId>jackson-databind</artifactId>
-		<version>2.1.4</version>
-	</dependency>
-	<dependency>
-		<groupId>com.fasterxml.jackson.core</groupId>
-		<artifactId>jackson-annotations</artifactId>
-		<version>2.1.4</version>
 	</dependency>
   </dependencies>
   <build>

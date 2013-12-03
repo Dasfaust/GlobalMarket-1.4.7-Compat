@@ -13,7 +13,7 @@ public class Listing {
 	
 	public Listing(Market market, int id, ItemStack item, String seller, double price, Long time) {
 		this.id = id;
-		this.item = new ItemStack(item);
+		this.item = item.clone();
 		this.seller = seller;
 		this.price = price;
 		this.time = time;

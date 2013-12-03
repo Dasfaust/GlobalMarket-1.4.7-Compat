@@ -175,7 +175,7 @@ public class InterfaceHandler {
 					market.log.warning("The item in " + viewer.getViewer() + "'s mail id " + entry.getKey() + " is null");
 					continue;
 				}
-				ItemStack item = new ItemStack(entry.getValue());
+				ItemStack item = entry.getValue().clone();
 				ItemMeta meta = item.getItemMeta().clone();
 				List<String> lore = meta.getLore();
 				if (!meta.hasLore()) {
