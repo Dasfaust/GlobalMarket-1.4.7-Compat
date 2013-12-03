@@ -1,0 +1,7 @@
+name: GlobalMarket
+main: com.survivorserver.GlobalMarket.Market
+version: ${version}
+commands:
+    market:
+        description: Market commands
+depend: [Vault]
